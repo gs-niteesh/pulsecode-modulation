@@ -65,7 +65,7 @@ function createSlider(min, max, value) {
 
 export class SineGenerator extends Block {
     constructor (x, y, w, h) {
-        super(x, y, w, h, 'SINE\nGENERATOR');
+        super(x, y, w, h, 'SINE WAVE\nGENERATOR');
         this.amp_slider = createSlider(0, 5000, 500);
         this.amp_slider.onchange = (evt) => {
             this.amplitude = int(evt.target.value);
@@ -120,19 +120,19 @@ export class Sampler extends Block {
 
 export class OneBitQuantizer extends Block {
     constructor (x, y, w, h) {
-        super(x, y, w, h, '1-BIT\nQUANTIZER');
+        super(x, y, w, h, 'QUANTIZER');
     }
 }
 
-export class LowPassFilter extends Block {
+export class ReconstructionFilter extends Block {
     constructor (x, y, w, h) {
-        super(x, y, w, h, 'LOW PASS\nFILTER');
+        super(x, y, w, h, 'RECONSTRUCTION\nFILTER');
     }
 }
 
 export class PredictionFilter extends Block {
     constructor (x, y, w, h) {
-        super(x, y, w, h, 'PREDICTION\nFILTER');
+        super(x, y, w, h, 'REGENERATIVE\nCIRCUIT');
     }
 }
 
