@@ -37,8 +37,8 @@ function drawAxes(ctx, orgx, orgy, line_start, line_end) {
 
     ctx.font = "20px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("Amplitude", orgx + 10, line_start + 10, 90);
-    ctx.fillText("Time", canvas_width - 100, line_end + 20, 70);
+    ctx.fillText("Y-Axis:Amplitude(Volts)", orgx + 10, line_start + 10, 190);
+    ctx.fillText("X-Axis:Timeperiod(ms)", canvas_width - 200, line_end + 20, 170);
     ctx.closePath();
 }
 
@@ -57,13 +57,9 @@ function xrange(start, stop, step) {
     return res;
 }
 
-// Will draw the sine wave starting from loc xOffset, yOffset
 function plotSine(ctx, amplitude, frequency, xOffset, yOffset, vertical_scaling_factor, horizontal_scaling_factor) {
     var width = 1000;
 
-    // 1-5: 80
-    // 6-12: 140
-    // 13-20: 200
     var Fs = 0;
     if (frequency >= 1 && frequency <= 5) Fs = 80;
     else if (frequency >= 6 && frequency <= 12) Fs = 140;
@@ -90,15 +86,6 @@ function plotSine(ctx, amplitude, frequency, xOffset, yOffset, vertical_scaling_
         idx++;
     }
 
-    // while (x.length < width) {
-    //     x = x.concat(x);
-    // }
-
-    // while (idx < width && idx < x.length) {
-    //     ctx.lineTo(xOffset + idx * horizontal_scaling_factor, yOffset - vertical_scaling_factor * x[idx]);
-    //     idx++;
-    // }
-
     ctx.stroke();
     ctx.save();
     ctx.font = "20px Arial";
@@ -111,7 +98,7 @@ function plotSine(ctx, amplitude, frequency, xOffset, yOffset, vertical_scaling_
 let size_set = false;
 
 export function drawSourceWave() {
-    const wave_amplitude = wave_amplitude_element.value*2;
+    const wave_amplitude = wave_amplitude_element.value * 2;
     const wave_frequency = wave_frequency_element.value;
     const vertical_scaling_factor = vertical_scale_element.value;
     const horizontal_scaling_factor = horizontal_scale_element.value;

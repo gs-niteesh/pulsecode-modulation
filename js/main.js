@@ -3,7 +3,6 @@ import { Wire, connectionNodes, WireManager, Encoder, Decoder } from './Block.js
 import { drawSourceWave } from './sourceWaveGraph.js';
 import { drawSampledWave } from './sampledWaveGraph.js';
 import { drawEncodedWave, getQuantizationLevels } from './encodedWaveGraph.js';
-import { Line } from './Line.js';
 import { drawDecoderWave } from './decoderWaveGraph.js';
 import { drawReconWave } from "./reconWaveGraph.js";
 import { drawQuantizedWave } from "./quantizerWaveGraph.js";
@@ -18,7 +17,6 @@ function windowResized() {
         block.update_pos();
     });
 }
-
 
 const validConnections = [
     'sgo+sai',
@@ -38,7 +36,6 @@ function validConnection(c1, c2) {
     return false;
 }
 
-
 let totalConnection = 0;
 
 function isCircuitComplete() {
@@ -57,6 +54,142 @@ function setup_demodulation() {
     myblocks.set('reconstructionfilter', new ReconstructionFilter(950-200, 587.6-170, 200, 100));
     myblocks.set('evaluate', new Evaluate(1250, 587.6-170, 200, 100));
 }
+
+
+const questions = {
+    1: {
+        "question": "Arrange the sequence of operations performed in transmitter part of a PCM system",
+        "options": [
+            "Decoder, Sampler, Quantizer",
+            "Quantizer, Filter, Sampler",
+            "Encoder, quantizer, Sampler",
+            "Sampler, Quantizer, Encoder"
+        ],
+        "answer": "Sampler, Quantizer, Encoder"
+    },
+    2: {
+        "question": "What is the transmission bandwidth of n- bit PCM for the message bandwidth of “w” Hz?",
+        "options": [
+            "BT=4nw",
+            "BT=nw/2",
+            "BT=2nw",
+            "BT=nw"
+        ],
+        "answer": "BT=nw"
+    },
+    3: {
+        "question": "Define PCM",
+        "options": [
+            "Each message sample is converted into n-bit binary.",
+            "Each message sample is converted into analog.",
+            "Each message sample is converted into discrete.",
+            "Each message sample is converted into sinewave."
+        ],
+        "answer": "Each message sample is converted into n-bit binary."
+    },
+    4: {
+        "question": "Calculate the signal to quantization noise ratio in dB for a 10-bit PCM system.",
+        "options": [
+            "23.8 dB",
+            "61.8 dB",
+            "72.6 dB",
+            "56.3 dB"
+        ],
+        "answer": "61.8 dB"
+    },
+    5: {
+        "question": "Obtain the codeword length ofa sample which is quantized into one of 16 levels in PCM.",
+        "options": [
+            "5",
+            "4",
+            "3",
+            "7"
+        ],
+        "answer": "4"
+    }
+};
+
+function generateQuizQuestions() {
+    let quizBody = document.getElementById("quizBody");
+    for (const [qnno, qobj] of Object.entries(questions)) {
+        let question_div = document.createElement("div");
+
+        let question = document.createElement("h5");
+        question.innerHTML = qnno + ') ' + qobj.question;
+
+        question_div.appendChild(question);
+
+        qobj.options.forEach((option) => {
+            let b = document.createElement("input");
+
+            b.type = "radio"
+            b.name = 'qn'+qnno;
+            b.value = option;
+            b.style = "margin-left: 25px";
+            let  c = document.createElement("label");
+            c.for = qnno;
+            c.innerText = option;
+            c.style = "margin-left: 10px";
+            question_div.appendChild(b);
+            question_div.appendChild(c);
+
+            question_div.appendChild(document.createElement("br"));
+        });
+        question_div.appendChild(document.createElement("br"));
+        quizBody.append(question_div);
+    }
+}
+
+function validateQuiz() {
+    console.log('Validate Quiz');
+    const num_questions = Object.entries(questions).length;
+    const questionMap = new Map(Object.entries(questions));
+    console.log(questionMap);
+    for (let i = 1; i <= num_questions; i++) {
+        const name = 'qn' + i;
+        const elements = document.getElementsByName(name);
+        let checked = false;
+        elements.forEach((element) => {
+            if (element.checked)
+                checked = true;
+        });
+        if (!checked) {
+            alert('Answer all questions');
+            return ;
+        }
+    }
+    const labels = document.getElementsByTagName('label');
+    console.log('Labels: ', labels);
+
+    for (let i = 1; i <= num_questions; i++) {
+        const name = 'qn' + i;
+        const elements = document.getElementsByName(name);
+
+        let ans = '';
+        elements.forEach((element) => {
+            if (element.checked) {
+                ans = element.value;
+            }
+        });
+        const correct_ans = questionMap.get(`${i}`).answer;
+        labels.forEach((label) => {
+            if (label.for !== `${i}`)
+                return ;
+            if (label.innerText === correct_ans) {
+                label.style = 'color: green; margin-left: 10px';
+            } else if (label.innerText === ans && ans !== correct_ans) {
+                label.style = 'color: red; margin-left: 10px';
+            }
+        });
+    }
+}
+
+function showQuizes() {
+    $('#quizModal').modal('show');
+    generateQuizQuestions();
+}
+
+document.getElementById('submitbtn').onclick = validateQuiz;
 
 function openModal(obj, dblClick = false) {
     // On double click first a single click event is triggered and then the double click event
@@ -85,18 +218,23 @@ function openModal(obj, dblClick = false) {
     $(modalName).on('shown.bs.modal', function () {
         if (modalName === '#sourceWaveGraph') {
             drawSourceWave();
+            console.log('1');
         } else if (modalName === '#sampledWaveGraph') {
             drawSampledWave();
+            console.log('6');
         } else if (modalName === '#decoderWaveGraph') {
             drawDecoderWave();
+            console.log('5');
         }else if (modalName === '#reconWaveGraph') {
             drawReconWave();
+            console.log('4');
         } else if (modalName === '#quantizerOutput') {
-            const binLength = getQuantizationLevels();
             drawQuantizedWave();
+            console.log('3');
         } else if (modalName === '#encodedWaveGraph') {
             drawEncodedWave();
-        } else if (modalName === '#evaluateOutput') {
+            console.log('2');
+        } else if (modalName === '#exampleModal') {
             console.log('Drawing eval otput');
             setupModal();
         }
@@ -127,6 +265,7 @@ function keyPressed() {
             console.log('removing ', currentSelected);
             wireManager.remove(currentSelected);
             currentSelected = null;
+            totalConnection --;
         }
         components = [];
         if (currentStartNode) currentStartNode = null;
@@ -157,6 +296,11 @@ function mouseClicked() {
                 if (validConnection(components[0].name, components[n - 1].name)) {
                     totalConnection ++;
                     wireManager.addWire(components);
+
+                    if (isCircuitComplete()) {
+                        showQuizes();
+                    }
+                    console.log('Total Connection: ', totalConnection);
                 } else {
                     alert("Invalid Connection. Please check your connections");
                 }

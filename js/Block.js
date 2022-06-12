@@ -257,7 +257,7 @@ export class Evaluate extends Block {
     }
 
     doubleClickModal() {
-        return 'evaluateOutput';
+        return 'exampleModal';
     }
 }
 

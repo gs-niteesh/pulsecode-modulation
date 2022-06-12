@@ -9,6 +9,8 @@
 
   <!-- p5 stuff -->
   <script src="js/p5.js"></script>
+  <script src="js/html2canvas.js"></script>
+  <script src="js/screenshot.js"></script>
 
   <!-- Simulator stuff -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -190,6 +192,13 @@
             </div>
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="getScreen3();">Download Graph</button>
+          <a href="" id="blank"></a>
+          <div class="caption" id="caption">
+            <span id="caption-text" class="border" style="text-align: center;"></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -332,6 +341,11 @@
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="getScreen2();">Download Graph</button>
+          <a href="" id="blank"></a>
+          <div class="caption" id="caption">
+            <span id="caption-text" class="border" style="text-align: center;"></span>
+          </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -403,6 +417,11 @@
           </div>
         <!-- Modal footer -->
         <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="getScreen1();">Download Graph</button>
+          <a href="" id="blank"></a>
+          <div class="caption" id="caption">
+            <span id="caption-text" class="border" style="text-align: center;"></span>
+          </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>

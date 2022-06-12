@@ -47,6 +47,9 @@ function drawPoint(ctx, x, y) {
 }
 
 function drawAxes() {
+    const line_start = 20;
+    const line_end = canvas_height - 50;
+
     ctx.beginPath();
     // Vertical line
     ctx.moveTo(orgx, 100);
@@ -68,8 +71,8 @@ function drawAxes() {
 
     ctx.font = "20px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("Amplitude", 58, 120, 90);
-    ctx.fillText("Time", window.screen.width-200, 530, 70);
+    ctx.fillText("Y-Axis:Amplitude(Volts)", orgx + 10, line_start + 10, 190);
+    ctx.fillText("X-Axis:Timeperiod(ms)", canvas_width - 200, line_end + 20, 170);
     ctx.closePath();
 
 }
@@ -267,11 +270,3 @@ export function setupModal() {
 
     requestAnimationFrame(draw);
 }
-
-export function getBinLengthSize() { return gbinlengthsize; }
-
-// document.getElementById("button1").onclick = setupModal;
-
-
-// Order :
-// draw() -> drawGraph() -> plotSine() ->  -> draw()
